@@ -1,4 +1,4 @@
-# Q1: GEM5 + NVMAIN Build-Up
+# GEM5 + NVMAIN Build-Up
 
 ## ✅ 環境設置
 - Ubuntu 18.04 + VirtualBox
