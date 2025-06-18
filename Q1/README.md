@@ -48,7 +48,7 @@
 
 ## 使 gem5 能使用 NVMain
 
-- 修改 gem5 的 Options.py
+- 修改 gem5/configs/common/Options.py
 
   > 在 addCommonOption 這個 function 底下多加這段
 
