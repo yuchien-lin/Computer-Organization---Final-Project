@@ -101,7 +101,7 @@ else:
 
 > 修改 if options.l2cache and options.elastic_trace_en 後面的 if options.l2cache，在前面新增 l3cache 判斷建立 L3 cache 與 L3XBar
   
-```python
+  ```python
   if options.l3cache:
     system.l3 = l3_cache_class(clk_domain=system.cpu_clk_domain,
                                size=options.l3_size, assoc=options.l3_assoc)
@@ -118,7 +118,7 @@ else:
     system.tol2bus = L2XBar(clk_domain = system.cpu_clk_domain)
     system.l2.cpu_side = system.tol2bus.master
     system.l2.mem_side = system.membus.slave
-```
+  ```
 
 <img src="https://github.com/user-attachments/assets/aa79fb91-538c-425a-a229-752614bbee3c" width="50%" height="auto">  
 
