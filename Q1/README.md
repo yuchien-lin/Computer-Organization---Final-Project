@@ -21,7 +21,7 @@
 
 #### 編譯gem5
 
-  > 在 gem5 目錄底下輸入
+  > 在 gem5 目錄底下 terminal輸入
   
    ```python
    scons build/X86/gem5.opt -j4  # j4 表示使用四個core加速
@@ -69,7 +69,7 @@
   
 #### 混合編譯 gem5 + NVMain
 
-  > 在 gem5 目錄底下輸入
+  > 在 gem5 目錄底下 terminal輸入
   
    ```python
    scons EXTRAS=../NVmain build/X86/gem5.opt -j4 # j4 表示使用四個core加速
@@ -81,7 +81,7 @@
 
 #### 執行 Hello World 測試
 
-  > 在 gem5 目錄下輸入
+  > 在 gem5 目錄底下 terminal輸入
 
   ```python
   ./build/X86/gem5.opt configs/example/se.py -c tests/test-progs/hello/bin/x86/linux/hello \
