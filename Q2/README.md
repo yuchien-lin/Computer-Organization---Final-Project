@@ -174,6 +174,7 @@ scons EXTRAS=../NVmain build/X86/gem5.opt -j4 # j4 表示使用四個core加速
 --cpu-type=TimingSimpleCPU --caches --l2cache --l3cache \
 --mem-type=NVMainMemory --nvmain-config=../NVmain/Config/PCM_ISSCC_2012_4GB.config
 ```
+<img src="https://github.com/user-attachments/assets/c0788651-b71c-4459-bbd8-97b1d39b8831" width="50%" height="auto">
 
 #### 輸出畫面
 
