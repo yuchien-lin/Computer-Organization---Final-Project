@@ -180,6 +180,10 @@ scons EXTRAS=../NVmain build/X86/gem5.opt -j4 # j4 表示使用四個core加速
 
 <img src="https://github.com/user-attachments/assets/37fc60d5-9b7d-4af7-b34e-cba508e14552" width="50%" height="auto">
 
+#### Active energy
+
+<img src="https://github.com/user-attachments/assets/a0e9f8e0-7e6d-422f-a413-a63b5fce34a9" width="50%" height="auto">
+
 #### gem5/m5out/stat.txt 看log
 
 > dcache
