@@ -93,7 +93,7 @@
 
   <img src="https://github.com/user-attachments/assets/ba9b002a-082c-4f8d-aee3-e6367477b0f7" width="50%" height="auto">
 
-#### gem5 的 m5out 中 stat.txt
+#### gem5/m5out/stat.txt 看log
 
   > dcache
   
