@@ -99,12 +99,15 @@
   
   <img src="https://github.com/user-attachments/assets/a14ca640-8234-4ba8-9d6a-14f105d57224" width="50%" height="auto">
 
+<p></p>
 
   > icache
   
   <img src="https://github.com/user-attachments/assets/f61d241a-79e5-4c6d-812e-783e3a956513" width="50%" height="auto">
+  
+<p></p>
 
-  > l2
+  > l2cache
 
   <img src="https://github.com/user-attachments/assets/4547bb71-bec4-453e-b6c3-46b2af83cdbf" width="50%" height="auto">
  
