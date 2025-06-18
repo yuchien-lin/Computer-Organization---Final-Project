@@ -94,6 +94,10 @@
 
   <img src="https://github.com/user-attachments/assets/ba9b002a-082c-4f8d-aee3-e6367477b0f7" width="50%" height="auto">
 
+#### Active energy
+
+  <img src="https://github.com/user-attachments/assets/39310da3-d5e5-43c6-a100-f9eed28f404e" width="50%" height="auto">
+
 #### gem5/m5out/stat.txt 看log
 
   > dcache
