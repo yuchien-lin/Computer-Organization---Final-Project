@@ -47,7 +47,7 @@
   
   <img src="https://github.com/user-attachments/assets/3181aabd-4ea5-47cf-838e-1d548b9702d8" width="50%" height="auto">
 
-## 使 gem5 能使用 NVMain
+## 讓 gem5 能使用 NVMain
 
 #### 修改 gem5/configs/common/Options.py
 
