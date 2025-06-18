@@ -1,16 +1,17 @@
 # GEM5 + NVMAIN Build-Up
 
 ## 環境設置
-- 使用 Ubuntu 18.04
+#### 使用 Ubuntu 18.04
   
   <img src="https://github.com/user-attachments/assets/62e1494f-4df0-45be-8111-8de7ae8957ed" width="50%" height="auto">
-- 安裝必要套件
+  
+#### 安裝必要套件
   
   <img src="https://github.com/user-attachments/assets/46e1b3eb-91b8-4b45-a418-1d7f33ee3e73" width="50%" height="auto">
 
 
 ## 下載並編譯 gem5
-- 下載 gem5  
+#### 下載 gem5  
 
   > (網址 : https://gem5.googlesource.com/public/gem5/+/525ce650e1a5bbe71c39d4b15598d6c003cc9f9e)
   
@@ -18,7 +19,7 @@
   
   <img src="https://github.com/user-attachments/assets/245dca58-392c-4edf-b47e-a87f23a1b180" width="50%" height="auto">
 
-- 編譯gem5
+#### 編譯gem5
 
   > 在 gem5 目錄底下輸入
   
@@ -29,7 +30,7 @@
    <img src="https://github.com/user-attachments/assets/9ff61b86-d059-4171-8b05-754c88b9891a" width="50%" height="auto">
 
 ## 下載並編譯 NVmain
-- 下載 NVmain
+#### 下載 NVmain
 
   > terminal 輸入
   
@@ -39,8 +40,8 @@
    
   <img src="https://github.com/user-attachments/assets/4d305b8f-289a-4561-afed-0e588a1af142" width="50%" height="auto">
   
-- 將 NVMain 資料夾放在與 gem5 同一層
-- 修改 NVmain 的 SConscript
+#### 將 NVMain 資料夾放在與 gem5 同一層
+#### 修改 NVmain 的 SConscript
 
   >  將 from gem5_scons import Transform 註解掉
   
@@ -48,7 +49,7 @@
 
 ## 使 gem5 能使用 NVMain
 
-- 修改 gem5/configs/common/Options.py
+#### 修改 gem5/configs/common/Options.py
 
   > 在 addCommonOption 這個 function 底下多加這段
 
@@ -60,13 +61,13 @@
    <img src="https://github.com/user-attachments/assets/8aaa862e-e8c2-438a-b6e2-1c748970c620" width="50%" height="auto">
 
 
-- 還原 NVMain 的 SConscript
+#### 還原 NVMain 的 SConscript
 
   >  將 from gem5_scons import Transform 這行取消註解
   
   <img src="https://github.com/user-attachments/assets/eb49d7b0-71ec-4b2b-8bb0-5ef79a9cf127" width="50%" height="auto">
   
-- 混合編譯 gem5 + NVMain
+#### 混合編譯 gem5 + NVMain
 
   > 在 gem5 目錄底下輸入
   
@@ -78,7 +79,7 @@
   
 ## 測試執行程式 Hello World
 
-- 執行 Hello World 測試
+#### 執行 Hello World 測試
 
   > 在 gem5 目錄下輸入
 
@@ -88,11 +89,11 @@
   --mem-type=NVMainMemory --nvmain-config=../NVmain/Config/PCM_ISSCC_2012_4GB.config
   ```
 
-- 輸出畫面
+#### 輸出畫面
 
   <img src="https://github.com/user-attachments/assets/ba9b002a-082c-4f8d-aee3-e6367477b0f7" width="50%" height="auto">
 
-- gem5 的 m5out 中 stat.txt
+#### gem5 的 m5out 中 stat.txt
 
   > dcache
   
