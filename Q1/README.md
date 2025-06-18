@@ -88,6 +88,7 @@
   --cpu-type=TimingSimpleCPU --caches --l2cache \
   --mem-type=NVMainMemory --nvmain-config=../NVmain/Config/PCM_ISSCC_2012_4GB.config
   ```
+<img src="https://github.com/user-attachments/assets/590d4d08-a5db-4c55-bc26-9135cfa79001" width="50%" height="auto">
 
 #### 輸出畫面
 
