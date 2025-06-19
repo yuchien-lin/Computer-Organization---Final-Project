@@ -49,9 +49,9 @@
 
 ## 讓 gem5 能使用 NVMain
 
-#### 修改 gem5/configs/common/Options.py
+#### 修改 Options.py
 
-  > 在 addCommonOption 這個 function 底下多加這段
+  > gem5/configs/common/Options.py 中 addCommonOption 這個 function 底下多加這段
 
   ```python
   for arg in sys.argv:
