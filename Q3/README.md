@@ -6,7 +6,7 @@
 
 <img src="https://github.com/user-attachments/assets/36674076-9fb9-4c82-927f-78a9c1f84b05" width="50%" height="auto">
 
-#### 產生執行檔
+#### 產生 quicksort 執行檔
 > 在 benchmark 資料夾底下 terminal輸入
 ```python
 gcc --static quicksort.c -o quicksort
