@@ -68,8 +68,11 @@ scons EXTRAS=../NVmain build/X86/gem5.opt -j4   # j4 表示使用四個core加�
 #### 執行結果
 
 <img src="https://github.com/user-attachments/assets/3650b82e-3f5c-4bfe-8b7c-5b91f0534f81" width="50%" height="auto">
+![image](https://github.com/user-attachments/assets/6792ac55-17ef-46a0-8272-339281dc908c)
+
 
 #### gem5/m5out/stats.txt 看 log
 
 <img src="" width="50%" height="auto">
+![image](https://github.com/user-attachments/assets/73a95359-04b9-492a-9000-d3e074ed36f7)
 
