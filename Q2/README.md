@@ -2,6 +2,21 @@
 
 ## 修改 5 個檔案以支援 --l3cache
 
+#### 順序
+CPU
+  │
+tol2bus (L2 XBar)
+  │
+L2 cache 
+  │
+tol3bus (L3 XBar)
+  │
+L3 cache 
+  │
+membus
+  │
+主記憶體（NVMain/DRAM）
+
 #### Options.py : gem5/configs/common/Options.py
 
   >增加一行在 l2cache 底下
@@ -17,16 +32,16 @@
 
   ```python
   class L3Cache(Cache):
-    assoc = 16
-    tag_latency = 20
-    data_latency = 20
-    response_latency = 20
-    mshrs = 20
-    tgts_per_mshr = 12
-    write_buffers = 8
+    assoc = 64
+    tag_latency = 32
+    data_latency = 32
+    response_latency = 32
+    mshrs = 32
+    tgts_per_mshr = 24
+    write_buffers = 16
   ```
 
-  <img src="https://github.com/user-attachments/assets/d27aa594-540a-43ff-bb17-962474404755" width="50%" height="auto">
+  <img src="https://github.com/user-attachments/assets/ab7752c7-c50a-4554-a752-6791220ceefc" width="50%" height="auto">
 
 #### XBar.py : gem5/src/mem/XBar.py
 
@@ -34,7 +49,8 @@
 
   ```python
   class L3XBar(CoherentXBar):
-    width = 64  # 512 bits
+    # 256-bit crossbar by default
+    width = 32
     frontend_latency = 1
     forward_latency = 0
     response_latency = 1
@@ -42,7 +58,7 @@
     snoop_filter = SnoopFilter(lookup_latency=0)
   ```
 
-  <img src="https://github.com/user-attachments/assets/ed251415-9389-422d-8724-8dcc2b750aa0" width="50%" height="auto">
+  <img src="https://github.com/user-attachments/assets/760bf039-d7ae-435a-9d81-2d497a062fba" width="50%" height="auto">
 
 #### BaseCPU.py : gem5/src/cpu/BaseCPU.py
 
@@ -73,10 +89,6 @@
 
 #### CacheConfig.py : gem5/configs/common/CacheConfig.py
 
->config_cache 的第一行 options.caches or options.l2cache 後面多加上 or options.l3cache
-
-<p></p>  
-
 > 底下 if options.cpu_type == "O3_ARM_v7a_3": 修改
 
 ```python
@@ -87,71 +99,41 @@ if options.cpu_type == "O3_ARM_v7a_3":
     print("O3_ARM_v7a_3 is unavailable. Did you compile the O3 model?")
     sys.exit(1)
 
-  dcache_class, icache_class, l2_cache_class, l3_cache_class, walk_cache_class = \
-    O3_ARM_v7a_DCache, O3_ARM_v7a_ICache, O3_ARM_v7aL2, O3_ARM_v7aL3,\
-    O3_ARM_v7aWalkCache
+  dcache_class, icache_class, l2_cache_class, walk_cache_class, l3_cache_class = \
+    O3_ARM_v7a_DCache, O3_ARM_v7a_ICache, O3_ARM_v7aL2, \
+    O3_ARM_v7aWalkCache, O3_ARM_v7aL3
 else:
-  dcache_class, icache_class, l2_cache_class, l3_cache_class, walk_cache_class = \
-    L1_DCache, L1_ICache, L2Cache , L3Cache, None
+  dcache_class, icache_class, l2_cache_class, walk_cache_class, l3_cache_class = \
+    L1_DCache, L1_ICache, L2Cache, None, L3Cache
 ```
   
-<img src="https://github.com/user-attachments/assets/4c009b09-6b6e-4b0b-a22d-3f68f81e5312" width="50%" height="auto">
+<img src="https://github.com/user-attachments/assets/cf94990a-7efb-4d2a-8601-6a6728107177" width="50%" height="auto">
 
 <p></p>
 
 > 修改 if options.l2cache and options.elastic_trace_en 後面的 if options.l2cache，在前面新增 l3cache 判斷建立 L3 cache 與 L3XBar
   
   ```python
-  if options.l3cache:
-    system.l3 = l3_cache_class(clk_domain=system.cpu_clk_domain,
-                               size=options.l3_size, assoc=options.l3_assoc)
-    system.tol3bus = L3XBar(clk_domain=system.cpu_clk_domain)
-    system.l3.mem_side = system.membus.slave
+  if options.l2cache and  options.l3cache:
+     system.l2 = l2_cache_class(clk_domain=system.cpu_clk_domain,
+                                size=options.l2_size,
+                                assoc=options.l2_assoc)
+     system.l3 = l3_cache_class(clk_domain=system.cpu_clk_domain,
+                                size=options.l3_size,
+                                assoc=options.l3_assoc)
+
+     system.tol2bus = L2XBar(clk_domain = system.cpu_clk_domain)
+     system.tol3bus = L3XBar(clk_domain = system.cpu_clk_domain)
+
+     system.l2.cpu_side = system.tol2bus.master
+     system.l2.mem_side = system.tol3bus.slave
+
+     system.l3.cpu_side = system.tol3bus.master
+     system.l3.mem_side = system.membus.slave
   elif options.l2cache:
-    # Provide a clock for the L2 and the L1-to-L2 bus here as they
-    # are not connected using addTwoLevelCacheHierarchy. Use the
-    # same clock as the CPUs.
-    system.l2 = l2_cache_class(clk_domain=system.cpu_clk_domain,
-                               size=options.l2_size,
-                               assoc=options.l2_assoc)
-  
-    system.tol2bus = L2XBar(clk_domain = system.cpu_clk_domain)
-    system.l2.cpu_side = system.tol2bus.master
-    system.l2.mem_side = system.membus.slave
   ```
 
-<img src="https://github.com/user-attachments/assets/aa79fb91-538c-425a-a229-752614bbee3c" width="50%" height="auto">  
-
-<p></p>
-
-> 修改for i in xrange(options.num_cpus) 內的 if options.l2cache ，在前面新增 l3cache 判斷，每顆 CPU 建立 private L2，並連到共用 L3 (L2 mem_side 連到 tol3bus)
-      
-```python
-if options.l3cache:
-   system.cpu[i].l2 = l2_cache_class(clk_domain=system.cpu_clk_domain,
-                                     size=options.l2_size,
-                                     assoc=options.l2_assoc)
-   system.cpu[i].tol2bus = L2XBar(clk_domain=system.cpu_clk_domain)
-
-   system.cpu[i].l2.cpu_side = system.cpu[i].tol2bus.master
-   system.cpu[i].l2.mem_side = system.tol3bus.slave
-
-   system.cpu[i].connectAllPorts(system.cpu[i].tol2bus, system.membus)
-
-elif options.l2cache:
-   system.cpu[i].connectAllPorts(system.tol2bus, system.membus)
-```
-<img src="https://github.com/user-attachments/assets/80a48c0d-b52f-49b1-8e77-96f23e546fbe" width="50%" height="auto">
-
-<p></p>
-
-> for 迴圈結束後，把 tol3bus 的 master 連到 L3 的 cpu_side
-      
-```python
-if options.l3cache:
-  system.l3.cpu_side = system.tol3bus.master
-```
-<img src="https://github.com/user-attachments/assets/cdb42a2c-32f9-44be-a8ba-4f8e3b336143" width="50%" height="auto">
+<img src="https://github.com/user-attachments/assets/3331de48-cafa-4a23-9284-11406d24f116" width="50%" height="auto">  
 
 ## 測試執行程式 Hello World
 
@@ -172,39 +154,41 @@ scons EXTRAS=../NVmain build/X86/gem5.opt -j4 # j4 表示使用四個core加速
 ```python
 ./build/X86/gem5.opt configs/example/se.py -c tests/test-progs/hello/bin/x86/linux/hello \
 --cpu-type=TimingSimpleCPU --caches --l2cache --l3cache \
+--l3_size=1MB --l3_assoc=16 \
 --mem-type=NVMainMemory --nvmain-config=../NVmain/Config/PCM_ISSCC_2012_4GB.config
 ```
-<img src="https://github.com/user-attachments/assets/c0788651-b71c-4459-bbd8-97b1d39b8831" width="50%" height="auto">
+<img src="https://github.com/user-attachments/assets/2b433197-fb04-42e7-b5dd-b2c44c376f05" width="50%" height="auto">
 
 #### 輸出畫面
 
-<img src="https://github.com/user-attachments/assets/37fc60d5-9b7d-4af7-b34e-cba508e14552" width="50%" height="auto">
+<img src="https://github.com/user-attachments/assets/58db1333-f8a4-4431-9e27-84d8c4e8d87d" width="50%" height="auto">
 
 #### Active energy
 
-<img src="https://github.com/user-attachments/assets/a0e9f8e0-7e6d-422f-a413-a63b5fce34a9" width="50%" height="auto">
+<img src="https://github.com/user-attachments/assets/baad52dd-6391-4838-9202-a416e15474eb" width="50%" height="auto">
 
 #### gem5/m5out/stat.txt 看log
 
 > dcache
 
-<img src="https://github.com/user-attachments/assets/49ca9c16-6bbe-43b4-b05a-b00c0d3717c5" width="50%" height="auto">
+<img src="https://github.com/user-attachments/assets/d394a6ae-37e6-4042-a33c-53ab673a8e1d" width="50%" height="auto">
 
 <p></p>
 
 > icache
 
-<img src="https://github.com/user-attachments/assets/4ab9883b-a595-42be-aeca-a19808e8ac26" width="50%" height="auto">
+<img src="https://github.com/user-attachments/assets/1fc817ea-5706-4bfa-ab0c-7ba4c8237e6b" width="50%" height="auto">
 
 <p></p>
 
 > l2cache
 
-<img src="https://github.com/user-attachments/assets/bc2e1434-65a9-4efb-b2ed-fb7b15b24e18" width="50%" height="auto">
+<img src="https://github.com/user-attachments/assets/0f9871ae-2df9-4a24-93be-77826b1fc34b" width="50%" height="auto">
 
 <p></p>
 
 > l3cache
 
-<img src="https://github.com/user-attachments/assets/07c82e9c-b28c-4cdb-930a-8949e916e2b5" width="50%" height="auto">
+<img src="https://github.com/user-attachments/assets/b5be644f-7607-411d-9816-d8c89f29eb57" width="50%" height="auto">
+
 
