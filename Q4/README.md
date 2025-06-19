@@ -90,6 +90,7 @@ std::static_pointer_cast<FBReplData>(replacement_data)->refCount = 1;
 <img src="https://github.com/user-attachments/assets/652c56b9-37c5-4e36-aa59-2cf2d8e1f583" width="50%" height="auto">
 
 > FBRP::getVictim(const ReplacementCandidates& candidates) const，for 迴圈裡面 修改 if-else if
+
 > 比較 refCount，refCount 相同時，比較 lastTouchTick
 ```python
 if (std::static_pointer_cast<FBReplData>(
@@ -156,6 +157,7 @@ scons EXTRAS=../NVmain build/X86/gem5.opt -j4   # j4 表示使用四個core加�
 
 #### 執行frequency based版本
 > 使用 quicksort array 大小 1000000
+
 > 在 gem5 資料夾底下 terminal 輸入
 ```python
 ./build/X86/gem5.opt configs/example/se.py -c benchmark/quicksort \
