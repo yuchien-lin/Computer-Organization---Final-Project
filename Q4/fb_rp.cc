@@ -82,9 +82,9 @@ FBRP::getVictim(const ReplacementCandidates& candidates) const
     for (const auto& candidate : candidates) {
         // Update victim entry if necessary
         if (std::static_pointer_cast<FBReplData>(
-                    candidate->replacementData)->lastTouchTick <
-                std::static_pointer_cast<FBReplData>(
-                    victim->replacementData)->lastTouchTick) {
+            candidate->replacementData)->refCount <
+            std::static_pointer_cast<FBReplData>(
+                victim->replacementData)->refCount) {
             victim = candidate;
         }
         else if (std::static_pointer_cast<FBReplData>(
