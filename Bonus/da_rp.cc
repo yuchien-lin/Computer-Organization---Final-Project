@@ -66,7 +66,7 @@ DARP::reset(const std::shared_ptr<ReplacementData>& replacement_data) const
 }
 
 ReplaceableEntry*
-DirtyAwareDARP::getVictim(const ReplacementCandidates& candidates) const
+DARP::getVictim(const ReplacementCandidates& candidates) const
 {
     ReplaceableEntry* victim = nullptr;
     Tick min_tick = Tick(-1);
