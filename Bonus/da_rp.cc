@@ -35,6 +35,7 @@
 
 #include "params/DARP.hh"
 
+#include "mem/cache/base.hh"
 DARP::DARP(const Params *p)
     : BaseReplacementPolicy(p)
 {
