@@ -1,8 +1,5 @@
 # Enable L3 last level cache in GEM5 + NVMAIN
-
-## 修改 5 個檔案以支援 --l3cache
-
-#### 順序
+##### 順序
 CPU
   │
 tol2bus (L2 XBar)
@@ -16,6 +13,8 @@ L3 cache
 membus
   │
 主記憶體（NVMain/DRAM）
+
+## 修改 5 個檔案以支援 --l3cache
 
 #### Options.py : gem5/configs/common/Options.py
 
