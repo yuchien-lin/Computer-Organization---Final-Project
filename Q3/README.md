@@ -28,7 +28,7 @@ gcc --static quicksort.c -o quicksort
 
 <img src="https://github.com/user-attachments/assets/f9036b5f-bff3-4c16-bdbf-0182a46e2387" width="50%" height="auto">
 
-#### array 大小 100000，gem5/m5out/stats.txt 看 log
+#### quicksort 內 array 大小 100000，gem5/m5out/stats.txt 看 log
 <img src="https://github.com/user-attachments/assets/7e609661-4170-40ee-9f8d-1f00e8715e3f" width="50%" height="auto">
 
 #### quicksort 內 array 大小 1000000，gem5/m5out/stats.txt 看 log
@@ -53,7 +53,7 @@ gcc --static quicksort.c -o quicksort
 #### 執行結果
 <img src="https://github.com/user-attachments/assets/95704e6f-33cc-4eca-a385-c9685d9dc1a9" width="50%" height="auto">
 
-#### array 大小 100000，gem5/m5out/stats.txt 看 log
+#### quicksort 內 array 大小 100000，gem5/m5out/stats.txt 看 log
 <img src="https://github.com/user-attachments/assets/037b539c-069f-458b-8180-22331ec7340d" width="50%" height="auto">
 
 #### quicksort 內 array 大小 1000000，gem5/m5out/stats.txt 看 log
