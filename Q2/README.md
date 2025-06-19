@@ -51,14 +51,15 @@ membus
   class L3XBar(CoherentXBar):
     # 256-bit crossbar by default
     width = 32
+
     frontend_latency = 1
     forward_latency = 0
     response_latency = 1
     snoop_response_latency = 1
-    snoop_filter = SnoopFilter(lookup_latency=0)
+    snoop_filter = SnoopFilter(lookup_latency = 0)
   ```
 
-  <img src="https://github.com/user-attachments/assets/760bf039-d7ae-435a-9d81-2d497a062fba" width="50%" height="auto">
+  <img src="https://github.com/user-attachments/assets/04141374-eac9-4749-85ac-d22334d2e657" width="50%" height="auto">
 
 #### BaseCPU.py : gem5/src/cpu/BaseCPU.py
 
@@ -75,17 +76,16 @@ membus
   >增加 addThreeLevelCacheHierarchy finction 在 addTwoLevelCacheHierarchy 底下
 
   ```python
-  def addThreeLevelCacheHierarchy(self, ic, dc, l3c, iwc=None, dwc=None,
-                                    xbar=None):
-        self.addPrivateSplitL2Caches(ic, dc, iwc, dwc)
-        self.toL3Bus = L3XBar()
-        self.connectCachedPorts(self.toL3Bus)
-        self.l3cache = l3c
-        self.toL3Bus.master = self.l3cache.cpu_side
-        self._cached_ports = ['l3cache.mem_side']
+  def addThreeLevelCacheHierarchy(self, ic, dc, l3c, iwc=None, dwc=None):
+    self.addPrivateSplitL2Caches(ic, dc, iwc, dwc)
+    self.toL3Bus = L3XBar()
+    self.connectCachedPorts(self.toL3Bus)
+    self.l3cache = l3c
+    self.toL2Bus.master = self.l3cache.cpu_side
+    self._cached_ports = ['l3cache.mem_side']
   ```
   
-  <img src="https://github.com/user-attachments/assets/c1946ad7-de97-431b-a745-55faf5b12851" width="50%" height="auto">
+  <img src="https://github.com/user-attachments/assets/ba0bdfc0-689f-4122-8b1c-310651b3bff8" width="50%" height="auto">
 
 #### CacheConfig.py : gem5/configs/common/CacheConfig.py
 
