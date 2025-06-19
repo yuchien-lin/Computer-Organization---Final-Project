@@ -1068,7 +1068,7 @@ BaseCache::access(PacketPtr pkt, CacheBlk *&blk, Cycles &lat,
         // OK to satisfy access
         incHitCount(pkt);
         satisfyRequest(pkt, blk);
-        maintainClusivity(pkt->froaamCache(), blk);
+        maintainClusivity(pkt->fromCache(), blk);
               
         if (blk ->isWritable()){
 	    PacketPtr  writeCleanPkt = writecleanBlk(blk, pkt->req->getDest(), pkt->id);
