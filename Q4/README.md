@@ -21,19 +21,20 @@
 
 #### gem5/m5out/stats.txt 看 log
 
-<img src="https://github.com/user-attachments/assets/70e7babf-2a4f-4b23-a1ad-eb0d22efdc51" width="50%" height="auto">
+<img src="https://github.com/user-attachments/assets/52900be9-5bb8-47bf-9b51-33ea4be6f773" width="50%" height="auto">
 
-## 修改為frequency based replacement，ppt上的為LFU-Oldest
+## 修改為frequency based replacement 
 #### 新增兩個檔案在 gem5/src/mem/cache/replacement_policies 
-> 透過修改 lfu_rp.cc 及 lfu_rp.hh 達到 LFU-Oldest 所需
+> 透過修改 lru_rp.cc 及 lru_rp.hh 達到 LFU-Oldest 所需
+
 > 先複製這兩個檔案，在 replacement_policies y 資料夾底下 terminal 輸入
 ```python
 cp lru_rp.hh fb_rp.hh
 cp lru_rp.cc fb_rp.cc
 ```
-<img src="https://github.com/user-attachments/assets/592d51ac-99cf-45a8-a862-d54974298fa6" width="50%" height="auto">
+<img src="https://github.com/user-attachments/assets/592d51ac-99cf-45a8-a862-d54974298fa6" width="45%" height="auto">
 
-<img src="https://github.com/user-attachments/assets/ab0097b7-395e-4e15-8d30-000e4bb0321a" width="50%" height="auto">
+<img src="https://github.com/user-attachments/assets/ab0097b7-395e-4e15-8d30-000e4bb0321a" width="45%" height="auto">
 
 #### 修改 fb_rp.hh
 
@@ -88,26 +89,32 @@ std::static_pointer_cast<FBReplData>(replacement_data)->refCount = 1;
 
 <img src="https://github.com/user-attachments/assets/652c56b9-37c5-4e36-aa59-2cf2d8e1f583" width="50%" height="auto">
 
-> FBRP::getVictim(const ReplacementCandidates& candidates) const，for 迴圈裡面 在裡面新增 else if
-> 先選 freq 最小，若有並列選 lastTouchTick 最小
+> FBRP::getVictim(const ReplacementCandidates& candidates) const，for 迴圈裡面 修改 if-else if
+> 比較 refCount，refCount 相同時，比較 lastTouchTick
 ```python
+if (std::static_pointer_cast<FBReplData>(
+    candidate->replacementData)->refCount <
+    std::static_pointer_cast<FBReplData>(
+        victim->replacementData)->refCount) {
+    victim = candidate;
+}
 else if (std::static_pointer_cast<FBReplData>(
     candidate->replacementData)->refCount ==
     std::static_pointer_cast<FBReplData>(
-    victim->replacementData)->refCount &&
+        victim->replacementData)->refCount &&
     std::static_pointer_cast<FBReplData>(
     candidate->replacementData)->lastTouchTick <
     std::static_pointer_cast<FBReplData>(
-    victim->replacementData)->lastTouchTick) {
+        victim->replacementData)->lastTouchTick) {
     victim = candidate;
 }
 ```
 
-<img src="https://github.com/user-attachments/assets/08f8439b-d757-45cb-ba5e-be1359ed3259" width="50%" height="auto">
+<img src="https://github.com/user-attachments/assets/a17ec397-67fb-4a44-bc36-b5ee4d2054e6" width="50%" height="auto">
 
 #### 修改 SConscript
 
-> gem5/src/mem/cache/SConscript 在底下新增一行
+> gem5/src/mem/cache/replacement_policies/SConscript 在底下新增一行
 ```python
 Source('fb_rp.cc')
 ```
@@ -145,5 +152,29 @@ replacement_policy = Param.BaseReplacementPolicy(FBRP(), "Replacement policy")
 scons EXTRAS=../NVmain build/X86/gem5.opt -j4   # j4 表示使用四個core加速
 ```
 
-<img src="https://github.com/user-attachments/assets/73c4f140-aec1-4097-955e-8d7dcb35ac9b" width="50%" height="auto">
+<img src="https://github.com/user-attachments/assets/68f7945a-0b71-4ba8-9686-322455096427" width="50%" height="auto">
+
+#### 執行frequency based版本
+> 使用 quicksort array 大小 1000000
+> 在 gem5 資料夾底下 terminal 輸入
+```python
+./build/X86/gem5.opt configs/example/se.py -c benchmark/quicksort \
+--cpu-type=TimingSimpleCPU --caches --l2cache --l3cache \
+--l1i_size=32kB --l1d_size=32kB --l2_size=128kB --l3_size=1MB --l3_assoc=2 \
+--mem-type=NVMainMemory --nvmain-config=../NVmain/Config/PCM_ISSCC_2012_4GB.config
+```
+<img src="https://github.com/user-attachments/assets/394e1aac-3226-4d63-9e40-681265beb603" width="50%" height="auto">
+
+
+#### 執行結果
+
+<img src="https://github.com/user-attachments/assets/e52da620-c173-49cf-84e3-f062d45d811e" width="50%" height="auto">
+
+#### gem5/m5out/stats.txt 看 log
+
+<img src="https://github.com/user-attachments/assets/5765ab7b-d90e-4e1e-8b91-a8acbcf28921" width="50%" height="auto">
+
+
+
+
 
