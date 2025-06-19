@@ -23,7 +23,7 @@ gcc --static multiply.c -o multiply
 
 #### 執行結果
 
-<img src="https://github.com/user-attachments/assets/52ef9f04-4bfc-43e6-9598-af316198e6f6" width="50%" height="auto">
+<img src="https://github.com/user-attachments/assets/325b8f9d-ebdd-4c52-80e7-f06356645bc1" width="50%" height="auto">
 
 #### gem5/m5out/stats.txt 看 log
 
