@@ -87,17 +87,17 @@ FBRP::getVictim(const ReplacementCandidates& candidates) const
                     victim->replacementData)->lastTouchTick) {
             victim = candidate;
         }
-        else if (std::static_pointer_cast<FBReplData>(
-            candidate->replacementData)->refCount ==
-            std::static_pointer_cast<FBReplData>(
-                victim->replacementData)->refCount &&
-            std::static_pointer_cast<FBReplData>(
-                candidate->replacementData)->lastTouchTick <
-            std::static_pointer_cast<FBReplData>(
-                victim->replacementData)->lastTouchTick) {
-            victim = candidate;
+        else if(std::static_pointer_cast<LFUReplData>(
+                    candidate->replacementData)->refCount ==
+                std::static_pointer_cast<LFUReplData>(
+                    victim->replacementData)->refCount){
+            if(std::static_pointer_cast<LFUReplData>(
+                    candidate->replacementData)->lastTouchTick <
+                std::static_pointer_cast<LFUReplData>(
+                    victim->replacementData)->lastTouchTick){
+                victim = candidate;
+            }
         }
-
     }
 
     return victim;
